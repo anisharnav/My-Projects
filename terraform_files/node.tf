@@ -105,8 +105,8 @@ resource "aws_instance" "my_ec2_instance2" {
 
       # Install Docker
       # REF: https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-      "sudo dnf update -y",
-      "sudo dnf install docker -y",
+      "sudo yum update -y",
+      "sudo yum install docker -y",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
       "sudo chmod 777 /var/run/docker.sock",
@@ -115,7 +115,7 @@ resource "aws_instance" "my_ec2_instance2" {
       # REF: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
       "sudo setenforce 0",
       "sudo sed -i 's/^SELINUX=enforcing$$/SELINUX=permissive/' /etc/selinux/config",
-      "cat <<EOF | sudo tee /etc/dnf.repos.d/kubernetes.repo",
+      "cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo",
       "[kubernetes]",
       "name=Kubernetes",
       "baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/",
@@ -124,7 +124,7 @@ resource "aws_instance" "my_ec2_instance2" {
       "gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key",
       "exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni",
       "EOF",
-      "sudo dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes",
+      "sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes",
       "sudo systemctl enable --now kubelet",
       "sudo kubeadm init --pod-network-cidr=10.244.0.0/16  --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem",
       "sudo mkdir -p $HOME/.kube",
