@@ -11,7 +11,7 @@ public class DevopsIntegrationApplication {
 
 	@GetMapping
 	public String message(){
-		return "Welcome to our DevOps Project and cicd pipeline !!";
+		return "Welcome to our DevOps Project by Adarsh Kumar !!";
 	}
 
 	public static void main(String[] args) {
