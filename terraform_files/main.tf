@@ -54,15 +54,15 @@ resource "aws_security_group" "my_security_group1" {
 # Note: i. First create a pem-key manually from the AWS console
 #      ii. Copy it in the same directory as your terraform code
 resource "aws_instance" "my_ec2_instance1" {
-  ami                    = "ami-00fa360e28f425da0"
-  instance_type          = "t3.small"
+  ami                    = "ami-0d0d444781b37ccdf"
+  instance_type          = "c7i-flex.large"
   vpc_security_group_ids = [aws_security_group.my_security_group1.id]
   key_name               = "My_Key" # paste your key-name here, do not use extension '.pem'
 
   # Consider EBS volume 30GB
   root_block_device {
-    volume_size = 30    # Volume size 30 GB
-    volume_type = "gp2" # General Purpose SSD
+    volume_size = 40    # Volume size 30 GB
+    volume_type = "gp3" # General Purpose SSD
   }
 
   tags = {
@@ -74,7 +74,7 @@ resource "aws_instance" "my_ec2_instance1" {
     # ESTABLISHING SSH CONNECTION WITH EC2
     connection {
       type        = "ssh"
-      private_key = file("./My_Key.pem") # replace with your key-name 
+      private_key = file("./My_Key.pem") # replace with your key-name
       user        = "ec2-user"
       host        = self.public_ip
     }
@@ -85,15 +85,15 @@ resource "aws_instance" "my_ec2_instance1" {
       # install java21 for jenkins compatibility
       "sudo yum install java-21-amazon-corretto -y",
 
-      # install maven for code build 
+      # install maven for code build
       "sudo yum install maven -y",
 
       # wait for 200sec before EC2 initialization
       "sleep 200",
-      # Install Git 
+      # Install Git
       "sudo yum install git -y",
-      
-      # Install Jenkins 
+
+      # Install Jenkins
       # REF: https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/
       "sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo",
       "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key",
@@ -115,7 +115,8 @@ resource "aws_instance" "my_ec2_instance1" {
 
       # Install Trivy
       # REF: https://aquasecurity.github.io/trivy/v0.18.3/installation/
-      "sudo rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.rpm",
+      "sudo rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.71.2/trivy_0.71.2_Linux-64bit.rpm",
+      "trivy --version",
 
       # Install Ansible
       "sudo yum update -y",
