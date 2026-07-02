@@ -11,7 +11,7 @@ public class DevopsIntegrationApplication {
 
 	@GetMapping
 	public String message(){
-		return "Welcome to our DevOps Project by Adarsh Kumar - 2nd july 2026. !!";
+		return "Welcome to our DevOps Project by Adarsh Kumar - 2nd july 2026 !!";
 	}
 
 	public static void main(String[] args) {
